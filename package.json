@@ -1,11 +1,10 @@
 {
-    "name": "bytearena-agent-demo",
-    "version": "0.0.1",
-    "scripts": {
-      "start": "node --harmony src/index.js"
-    },
-    "dependencies": {
-      "bytearena-sdk": "0.0.6"
-    }
+  "name": "bytearena-agent-demo",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node --harmony src/index.js"
+  },
+  "dependencies": {
+    "bytearena-sdk": "0.0.10"
+  }
 }
-  
