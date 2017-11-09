@@ -2,13 +2,13 @@ const { vector: { Vector2 } } = require('bytearena-sdk');
 
 module.exports = function computeAvoidanceForce(perception) {
     
-    const agentvelocity = Vector2.fromArray(perception.Internal.Velocity);
-    const agentradius = perception.Internal.Proprioception;
-    const visionradius = perception.Specs.VisionRadius;
+    const agentvelocity = Vector2.fromArray(perception.internal.velocity);
+    const agentradius = perception.internal.proprioception;
+    const visionradius = perception.specs.visionRadius;
 
     // on évite les obstacles
     let avoidanceforce = new Vector2();
-    if(perception.External.Vision) {
+    if(perception.external.vision) {
 
         // normals
         const normals = agentvelocity.normals();
@@ -20,14 +20,14 @@ module.exports = function computeAvoidanceForce(perception) {
         const topleft = bottomleft.clone().rotate(-Math.PI/2).mag(2.5).add(bottomleft);         // 15 u en avant
         const topright = bottomright.clone().rotate(Math.PI/2).mag(2.5).add(bottomright);       // 15 u en avant
 
-        for(const otheragentkey in perception.External.Vision) {
-            const otheragent = perception.External.Vision[otheragentkey];
-            if(otheragent.Tag !== "obstacle" && otheragent.Tag !== "agent") continue;
+        for(const otheragentkey in perception.external.vision) {
+            const otheragent = perception.external.vision[otheragentkey];
+            if(otheragent.tag !== "obstacle" && otheragent.tag !== "agent") continue;
 
-            const otheragentvelocity = Vector2.fromArray(otheragent.Velocity);
+            const otheragentvelocity = Vector2.fromArray(otheragent.velocity);
 
-            closeEdge = Vector2.fromArray(otheragent.CloseEdge).add(otheragentvelocity);
-            farEdge = Vector2.fromArray(otheragent.FarEdge).add(otheragentvelocity);
+            closeEdge = Vector2.fromArray(otheragent.closeEdge).add(otheragentvelocity);
+            farEdge = Vector2.fromArray(otheragent.farEdge).add(otheragentvelocity);
             const segment = farEdge.clone().sub(closeEdge);
 
             const edgestoavoid = [];
