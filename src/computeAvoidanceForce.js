@@ -26,44 +26,44 @@ module.exports = function computeAvoidanceForce(perception) {
 
             const otheragentvelocity = Vector2.fromArray(otheragent.velocity);
 
-            closeEdge = Vector2.fromArray(otheragent.closeEdge).add(otheragentvelocity);
-            farEdge = Vector2.fromArray(otheragent.farEdge).add(otheragentvelocity);
-            const segment = farEdge.clone().sub(closeEdge);
+            const nearedge = Vector2.fromArray(otheragent.nearedge).add(otheragentvelocity);
+            const faredge = Vector2.fromArray(otheragent.faredge).add(otheragentvelocity);
+            const segment = faredge.clone().sub(nearedge);
 
             const edgestoavoid = [];
 
             // can be overlapping, but not sure yet (test has been made on an axis aligned bounding box, but the corridor is oriented, not aligned)
 
-            if(pointInRectangle(closeEdge, bottomleft, bottomright, topright, topleft)) {
-                // CLOSEEDGE IN CORRIDOR
-                edgestoavoid.push(closeEdge);
+            if (pointInRectangle(nearedge, bottomleft, bottomright, topright, topleft)) {
+                // nearedge IN CORRIDOR
+                edgestoavoid.push(nearedge);
             }
 
-            if(pointInRectangle(farEdge, bottomleft, bottomright, topright, topleft)) {
+            if(pointInRectangle(faredge, bottomleft, bottomright, topright, topleft)) {
                 // FAREDGE IN CORRIDOR
-                edgestoavoid.push(farEdge);
+                edgestoavoid.push(faredge);
             }
 
             // test corridor intersection with line segment
-            let collision = Vector2.intersectionWithLineSegment(bottomleft, topleft, closeEdge, farEdge);
+            let collision = Vector2.intersectionWithLineSegment(bottomleft, topleft, nearedge, faredge);
             if(collision.intersects && !collision.colinear) {
                 // COLLISION LEFT
                 edgestoavoid.push(collision.intersection);
             }
 
-            collision = Vector2.intersectionWithLineSegment(bottomright, topright, closeEdge, farEdge);
+            collision = Vector2.intersectionWithLineSegment(bottomright, topright, nearedge, faredge);
             if(collision.intersects && !collision.colinear) {
                 // COLLISION RIGHT
                 edgestoavoid.push(collision.intersection);
             }
 
-            collision = Vector2.intersectionWithLineSegment(bottomleft, bottomright, closeEdge, farEdge);
+            collision = Vector2.intersectionWithLineSegment(bottomleft, bottomright, nearedge, faredge);
             if(collision.intersects && !collision.colinear) {
                 // COLLISION BOTTOM
                 edgestoavoid.push(collision.intersection);
             }
 
-            collision = Vector2.intersectionWithLineSegment(topleft, topright, closeEdge, farEdge);
+            collision = Vector2.intersectionWithLineSegment(topleft, topright, nearedge, faredge);
             if(collision.intersects && !collision.colinear) {
                 // COLLISION TOP
                 edgestoavoid.push(collision.intersection);
