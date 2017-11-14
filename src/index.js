@@ -6,7 +6,7 @@ process.on('SIGTERM', () => process.exit());
 
 function move({ perception, sendMoves }) {
     const avoidanceForce = computeAvoidanceForce(perception);
-    const speed = avoidanceForce.mag() > 0 ? perception.specs.maxspeed / 3 : perception.specs.maxspeed;
+    const speed = perception.specs.maxspeed;
     const seekingForce = new Vector2(Math.random() * 30 * (Math.random() > .5 ? -1 : 1), Math.random() * 30 * (Math.random() > .5 ? -1 : 1));
 
     const moves = [];

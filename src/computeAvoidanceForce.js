@@ -17,8 +17,8 @@ module.exports = function computeAvoidanceForce(perception) {
         const bottomleft = normals[0].clone().mag(agentradius+0.5);          // 10 pixels plus large à gauche
         const bottomright = normals[1].clone().mag(agentradius+0.5);         // 10 pixels plus large à droite
 
-        const topleft = bottomleft.clone().rotate(-Math.PI/2).mag(2.5).add(bottomleft);         // 15 u en avant
-        const topright = bottomright.clone().rotate(Math.PI/2).mag(2.5).add(bottomright);       // 15 u en avant
+        const topleft = bottomleft.clone().rotate(-Math.PI/2).mag(15).add(bottomleft);         // 15 u en avant
+        const topright = bottomright.clone().rotate(Math.PI/2).mag(15).add(bottomright);       // 15 u en avant
 
         for(const otheragentkey in perception.external.vision) {
             const otheragent = perception.external.vision[otheragentkey];
