@@ -2,13 +2,13 @@ const { vector: { Vector2 } } = require('bytearena-sdk');
 
 module.exports = function computeAvoidanceForce(perception, specs) {
     
-    const agentvelocity = Vector2.fromArray(perception.internal.velocity);
-    const agentradius = perception.internal.proprioception;
+    const agentvelocity = Vector2.fromArray(perception.velocity);
+    const agentradius = perception.bodyradius;
     const visionradius = specs.visionradius;
 
     // on évite les obstacles
     let avoidanceforce = new Vector2();
-    if(perception.external.vision) {
+    if(perception.vision) {
 
         // normals
         const normals = agentvelocity.normals();
@@ -20,8 +20,8 @@ module.exports = function computeAvoidanceForce(perception, specs) {
         const topleft = bottomleft.clone().rotate(-Math.PI/2).mag(15).add(bottomleft);         // 15 u en avant
         const topright = bottomright.clone().rotate(Math.PI/2).mag(15).add(bottomright);       // 15 u en avant
 
-        for(const otheragentkey in perception.external.vision) {
-            const otheragent = perception.external.vision[otheragentkey];
+        for(const otheragentkey in perception.vision) {
+            const otheragent = perception.vision[otheragentkey];
             if(otheragent.tag !== "obstacle" && otheragent.tag !== "agent") continue;
 
             const otheragentvelocity = Vector2.fromArray(otheragent.velocity);
