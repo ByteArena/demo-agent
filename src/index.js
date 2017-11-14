@@ -2,7 +2,7 @@ const { vector: { Vector2 }, comm } = require('bytearena-sdk');
 
 const computeAvoidanceForce = require('./computeAvoidanceForce');
 
-const agent = comm.default()
+const agent = comm.connect()
 
 agent.on('perception', (perception, sendMutations) => {
     const avoidanceForce = computeAvoidanceForce(perception);
