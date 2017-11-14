@@ -2,11 +2,13 @@ const { vector: { Vector2 }, comm } = require('bytearena-sdk');
 
 const computeAvoidanceForce = require('./computeAvoidanceForce');
 
-const agent = comm.connect()
+let specs = null;
+
+const agent = comm.connect();
 
 agent.on('perception', perception => {
-    const avoidanceForce = computeAvoidanceForce(perception);
-    const speed = perception.specs.maxspeed;
+    const avoidanceForce = computeAvoidanceForce(perception, specs);
+    const speed = specs.maxspeed;
     const seekingForce = new Vector2(Math.random() * 30 * (Math.random() > .5 ? -1 : 1), Math.random() * 30 * (Math.random() > .5 ? -1 : 1));
 
     const actions = [];
@@ -23,4 +25,4 @@ agent.on('perception', perception => {
     agent.takeActions(actions)
 })
 
-agent.on('specs', (x) => console.log(x))
+agent.on('welcome', _specs => (specs = _specs));
