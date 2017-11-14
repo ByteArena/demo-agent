@@ -2,9 +2,9 @@ const { vector: { Vector2 }, comm } = require('bytearena-sdk');
 
 const computeAvoidanceForce = require('./computeAvoidanceForce');
 
-process.on('SIGTERM', () => process.exit());
+const agent = comm.default()
 
-function move({ perception, sendMoves }) {
+agent.on('perception', (perception, sendMutations) => {
     const avoidanceForce = computeAvoidanceForce(perception);
     const speed = perception.specs.maxspeed;
     const seekingForce = new Vector2(Math.random() * 30 * (Math.random() > .5 ? -1 : 1), Math.random() * 30 * (Math.random() > .5 ? -1 : 1));
@@ -20,23 +20,7 @@ function move({ perception, sendMoves }) {
     moves.push({ Method: 'shoot', Arguments: [0, 10] });
 
     // Pushing batch of mutations
-    sendMoves(moves)
-    .catch(err => { console.error(err); });
-}
+    sendMutations(moves)
+})
 
-comm.connect(
-    process.env.PORT,
-    process.env.HOST,
-    process.env.AGENTID
-)
-.then(({ onTick, onClose }) => {
-    onTick(move)
-
-    onClose(() => {
-        console.log("CLOSING")
-    })
-});
-
-// setInterval(function() {
-//     throw new Error("I'm dead")
-// }, 3000)
+agent.on('specs', (x) => console.log(x))
