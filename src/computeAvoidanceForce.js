@@ -3,7 +3,7 @@ const { vector: { Vector2 } } = require('bytearena-sdk');
 module.exports = function computeAvoidanceForce(perception, specs) {
     
     const agentvelocity = Vector2.fromArray(perception.velocity);
-    const agentradius = perception.bodyradius;
+    const agentradius = specs.bodyradius;
     const visionradius = specs.visionradius;
 
     // on évite les obstacles
